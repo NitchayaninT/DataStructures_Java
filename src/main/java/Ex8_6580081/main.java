@@ -180,7 +180,6 @@ public class main {
         LinkedHashSet<String> chosen_actors = readStrings();
         LinkedHashSet<String> actorsToAdd = new LinkedHashSet<>(); //temp for chosen_actors
         Set<String> total_actors1 = Map.getTotalActorsSet(); //get all actors
-
         ActorMap Map2 = new ActorMap();
         for(String chosen_actor : chosen_actors)
         {
