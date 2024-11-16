@@ -95,6 +95,10 @@ public class main {
         Scanner sc = new Scanner(System.in);
         System.out.println("Add names or surnames seperated by comma =");
         String input = sc.nextLine();
+        if (input.isEmpty()) {
+            System.out.println("you havent inserted anything");
+            return new LinkedHashSet<>(); // Return an empty set if input is empty
+        }
         String[] names = input.split(",");
         for(int i=0;i<names.length;i++)
         {

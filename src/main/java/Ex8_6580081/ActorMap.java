@@ -56,8 +56,11 @@ public class ActorMap {
     //methods
     public void initialActors() 
     { 
-    /* Initialize resultSet to contain movies of all given actors */ 
- 
+    /* Initialize resultSet to contain movies of all given actors */
+        if (workingMap2.isEmpty()) {
+            System.out.println("Please insert actors");
+            return;
+        }
         Set< Map.Entry<String, LinkedHashSet<String>> > allEntries = workingMap2.entrySet();
         resultSet = new LinkedHashSet< >(allEntries.iterator().next().getValue()); //set1 (movies of first actor1)
         int countEntry = 0;
@@ -79,8 +82,12 @@ public class ActorMap {
 
     public void containActors()
     { 
-    /* Find movies in resultSet containing given actors */ 
-       
+    /* Find movies in resultSet containing given actors */
+        if (workingMap2.isEmpty() || resultSet.isEmpty()) {
+            System.out.println("Please insert actors");
+            return;
+        }
+
         Set< Map.Entry<String, LinkedHashSet<String>> > allEntries = workingMap2.entrySet();
                 
         LinkedHashSet<String> intersect = new LinkedHashSet<>(allEntries.iterator().next().getValue());//set1 (movies of first actor1)
@@ -104,7 +111,11 @@ public class ActorMap {
  
     public void withoutActors()
     {
-    /* Find movies in resultSet without given actors */ 
+    /* Find movies in resultSet without given actors */
+        if (workingMap2.isEmpty() || resultSet.isEmpty()) {
+            System.out.println("Please insert actors");
+            return;
+        }
         Set< Map.Entry<String, LinkedHashSet<String>> > allEntries = workingMap2.entrySet();
  
         LinkedHashSet<String> MoviesToExclude = new LinkedHashSet<>();//set1 (movies of first actor1)
