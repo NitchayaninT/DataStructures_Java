@@ -15,6 +15,7 @@ public class ActorGraph {
     public static final String BACON = "Kevin Bacon";
     private Graph<String, DefaultEdge> costarGraph;
     private Graph<String, DefaultEdge> conflictGraph;
+    private TreeMap<String, TreeSet<String>> workingMap;
 
     //setter
     public void setCostarGraph(String actorSource, String actorTarget)
@@ -37,21 +38,33 @@ public class ActorGraph {
         addGraph(conflictGraph,costarGraph);
         conflictGraph.removeVertex(BACON);
     }
-
+    //use Map to keep data from input file
+    public void setTreeMap(String actor, String movie)
+    {
+        TreeSet <String> movies = workingMap.get(actor);
+        if(movies==null)
+        {
+            movies = new TreeSet<>();
+            workingMap.put(actor,movies);
+        }
+        movies.add(movie);
+    }
     //getter
-    public Graph<String,DefaultEdge> getCoStarGraph()
+    public Graph<String,DefaultEdge> getCoStarGraph() {return costarGraph;}
+    public Graph<String,DefaultEdge> getConflictGraph() {return conflictGraph;}
+    public Set<String> getConflictVertices() {return conflictGraph.vertexSet();}
+    public TreeMap getTreeMap()
     {
-        return costarGraph;
+        return workingMap;
     }
-
-    public Graph<String,DefaultEdge> getConflictGraph()
+    public int getCoStarSize(){return costarGraph.vertexSet().size();}
+    public int getConflictSize(){return conflictGraph.vertexSet().size();}
+    //constructor
+    public ActorGraph()
     {
-        return conflictGraph;
-    }
-
-    public Set<String> getConflictVertices()
-    {
-        return conflictGraph.vertexSet();
+        workingMap = new TreeMap();
+        costarGraph = new SimpleGraph<>(DefaultEdge.class);
+        conflictGraph = new SimpleGraph<>(DefaultEdge.class);
     }
     //methods
     public void baconDegree()
