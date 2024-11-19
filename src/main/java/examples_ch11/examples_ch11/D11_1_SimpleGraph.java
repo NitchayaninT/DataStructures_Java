@@ -31,7 +31,7 @@ class D11_1_SimpleGraph
         //mygraph.testStrongConnectivity();      // error! for undirected graph
         
         //mygraph.testMST();
-        //mygraph.testColoring();       
+        mygraph.testColoring();
     }
     
     public D11_1_SimpleGraph()

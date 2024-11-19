@@ -38,15 +38,16 @@ public class main {
             countLines++;
         }
         System.out.println();
-
+        G.setConflictGraph();
     }
     //MAIN
     public static void main(String []args)
     {
         main mainProg = new main();
         mainProg.initialize();
-        mainProg.printCoStar();
-        mainProg.printConflict();
+        //mainProg.printCoStar();
+        //mainProg.printConflict();
+        mainProg.printBaconParties();
 
     }
     public void printCoStar()
@@ -56,5 +57,9 @@ public class main {
     public void printConflict()
     {
         G.printConflictGraph();
+    }
+    public void printBaconParties()
+    {
+        G.baconParties();
     }
 }
