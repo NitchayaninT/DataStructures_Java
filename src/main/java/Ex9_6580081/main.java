@@ -38,24 +38,24 @@ public class main {
             countLines++;
         }
         System.out.println();
-        //G.setConflictGraph();
+
 
         //use data from treemap to create costarGraph and conflictGraph
-        TreeMap<String, TreeSet<String>> M = new TreeMap<>(G.getTreeMap());
+        TreeMap<String, LinkedHashSet<String>> M = new TreeMap<>(G.getTreeMap());
         for(String key : M.keySet())
         {
             //find if any other actor has the same movie
             String actorSource = key;
-            //compare movie
+            //compare movie of actor source and other actors (key2)
             for(String movie : M.get(actorSource))
             {
                 //movie1
-                for(String key2 : M.keySet())
+                for(String key2 : M.keySet()) //iterate every actor to compare movies
                 {
                     if(key.equals(key2)) continue;
-                    if(M.get(key2).contains(movie)){
+                    if(M.get(key2).contains(movie)){ //if actor2's movies contains actor's movie -> construct the edge
                         String actorDest = key2;
-                        if(G.getCoStarGraph().containsEdge(actorSource,actorDest)) continue;
+                        if(G.getCoStarGraph().containsEdge(actorSource,actorDest)) continue; //if the edge already exists
                         else{ G.setCostarGraph(actorSource,actorDest);}
                     }
 
@@ -73,6 +73,7 @@ public class main {
         //mainProg.printCoStar();
         //mainProg.printConflict();
         mainProg.printBaconParties();
+        mainProg.printBaconDegrees();
 
     }
     public void printCoStar()
@@ -87,4 +88,5 @@ public class main {
     {
         G.baconParties();
     }
+    public void printBaconDegrees(){G.baconDegree();}
 }

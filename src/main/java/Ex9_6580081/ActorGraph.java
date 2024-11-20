@@ -2,6 +2,7 @@ package Ex9_6580081;
 
 import java.util.*;
 import org.jgrapht.*;
+import org.jgrapht.alg.shortestpath.BFSShortestPath;
 import org.jgrapht.graph.*;
 import org.jgrapht.alg.connectivity.*;
 import org.jgrapht.alg.color.*;
@@ -15,7 +16,7 @@ public class ActorGraph {
     public static final String BACON = "Kevin Bacon";
     private Graph<String, DefaultEdge> costarGraph;
     private Graph<String, DefaultEdge> conflictGraph;
-    private TreeMap<String, TreeSet<String>> workingMap;
+    private LinkedHashMap<String, LinkedHashSet<String>> workingMap;
 
     //setter
     public void setCostarGraph(String actorSource, String actorTarget)
@@ -41,10 +42,10 @@ public class ActorGraph {
     //use Map to keep data from input file
     public void setTreeMap(String actor, String movie)
     {
-        TreeSet <String> movies = workingMap.get(actor);
+        LinkedHashSet <String> movies = workingMap.get(actor);
         if(movies==null)
         {
-            movies = new TreeSet<>();
+            movies = new LinkedHashSet<>();
             workingMap.put(actor,movies);
         }
         movies.add(movie);
@@ -53,7 +54,7 @@ public class ActorGraph {
     public Graph<String,DefaultEdge> getCoStarGraph() {return costarGraph;}
     public Graph<String,DefaultEdge> getConflictGraph() {return conflictGraph;}
     public Set<String> getConflictVertices() {return conflictGraph.vertexSet();}
-    public TreeMap getTreeMap()
+    public LinkedHashMap getTreeMap()
     {
         return workingMap;
     }
@@ -62,13 +63,74 @@ public class ActorGraph {
     //constructor
     public ActorGraph()
     {
-        workingMap = new TreeMap();
+        workingMap = new LinkedHashMap();
         costarGraph = new SimpleGraph<>(DefaultEdge.class);
         conflictGraph = new SimpleGraph<>(DefaultEdge.class);
     }
     //methods
     public void baconDegree()
     { /* Find Bacon degree of given actor */
+        String actor = new String();
+        while(true) {
+            System.out.println("==================== Bacon degrees ====================");
+            System.out.println("Enter name or username, or 0 to quit");
+            Scanner sc = new Scanner(System.in);
+            actor = sc.nextLine();
+            if(actor.equals("0")) break;
+            else if(actor.isEmpty())
+            {
+                System.out.println("You haven't inserted any actor's name, please insert!");
+                continue;
+            }
+            Set<String> total_actors = workingMap.keySet(); //get all actors
+            Set<String> chosen_actors = new TreeSet<>();
+            for (String each_actor : total_actors) {
+                if (each_actor.toLowerCase().contains(actor)) {
+                    chosen_actors.add(each_actor);
+                }
+            }
+
+            System.out.println("Valid actors = " + chosen_actors);
+
+            //find shortest path to costarGraph to find bacon degree of THAT actor
+            //unweighted, use BFS
+            BFSShortestPath<String, DefaultEdge> BFS = new BFSShortestPath<>(costarGraph);
+            for (String eachActor : chosen_actors) {
+                GraphPath<String, DefaultEdge> pathToBacon = BFS.getPath(eachActor, BACON);
+                System.out.println(eachActor + " >> " + "Bacon degree = " + pathToBacon.getLength());
+
+                List<DefaultEdge> list = pathToBacon.getEdgeList();
+                String currentActor = eachActor;
+                String source, target;
+                // Print the edges in the expected order (source -> target)
+                for (DefaultEdge eachEdge : list) {
+
+                    if(currentActor.equals(costarGraph.getEdgeSource(eachEdge)))
+                    {
+                        source = costarGraph.getEdgeSource(eachEdge);
+                        target = costarGraph.getEdgeTarget(eachEdge);
+
+                        currentActor = target;
+                    }
+                    else{
+                        target = costarGraph.getEdgeSource(eachEdge);
+                        source = costarGraph.getEdgeTarget(eachEdge);
+
+                        currentActor = target;
+                    }
+
+                    LinkedHashSet<String> movies = workingMap.get(source); //get list of movies of the source actor
+                    movies.retainAll(workingMap.get(target)); //get mutual movie
+
+                    System.out.printf("%20s - %-20s (%s)",source,target, movies.getFirst());
+                    System.out.println();
+                }
+                System.out.println();
+            }
+
+
+        }
+
 
     }
     //apply graph coloring to conflictGraph
