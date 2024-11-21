@@ -70,8 +70,6 @@ public class main {
     {
         main mainProg = new main();
         mainProg.initialize();
-        //mainProg.printCoStar();
-        //mainProg.printConflict();
         mainProg.printBaconParties();
         mainProg.printBaconDegrees();
 
